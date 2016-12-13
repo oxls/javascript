@@ -106,11 +106,14 @@ Other Style Guides
     const a = 1;
     const b = 2;
     ```
+    tslint: `prefer-const`. TypeScript disallows reference reassignment already.
 
   <a name="references--disallow-var"></a><a name="2.2"></a>
   - [2.2](#references--disallow-var) If you must reassign references, use `let` instead of `var`. eslint: [`no-var`](http://eslint.org/docs/rules/no-var.html) jscs: [`disallowVar`](http://jscs.info/rule/disallowVar)
 
-    > Why? `let` is block-scoped rather than function-scoped like `var`.
+    > Why? `let` is block-scoped rather than function-scoped like `var`. [For more information](http://softwareengineering.stackexchange.com/questions/274342/is-there-any-reason-to-use-the-var-keyword-in-es6)
+    
+    tslint: `no-var-keyword`
 
     ```javascript
     // bad
@@ -145,6 +148,8 @@ Other Style Guides
 
   <a name="objects--no-new"></a><a name="3.1"></a>
   - [3.1](#objects--no-new) Use the literal syntax for object creation. eslint: [`no-new-object`](http://eslint.org/docs/rules/no-new-object.html)
+  
+  This is not applicable to typescript.
 
     ```javascript
     // bad
@@ -158,6 +163,8 @@ Other Style Guides
   - [3.2](#es6-computed-properties) Use computed property names when creating objects with dynamic property names.
 
     > Why? They allow you to define all the properties of an object in one place.
+    
+    This is not applicable to typescript.
 
     ```javascript
 
@@ -182,6 +189,8 @@ Other Style Guides
 
   <a name="es6-object-shorthand"></a><a name="3.5"></a>
   - [3.3](#es6-object-shorthand) Use object method shorthand. eslint: [`object-shorthand`](http://eslint.org/docs/rules/object-shorthand.html) jscs: [`requireEnhancedObjectLiterals`](http://jscs.info/rule/requireEnhancedObjectLiterals)
+  
+  tslint: `object-literal-shorthand`
 
     ```javascript
     // bad
@@ -254,6 +263,8 @@ Other Style Guides
 
   <a name="objects--quoted-props"></a><a name="3.8"></a>
   - [3.6](#objects--quoted-props) Only quote properties that are invalid identifiers. eslint: [`quote-props`](http://eslint.org/docs/rules/quote-props.html) jscs: [`disallowQuotedKeysInObjects`](http://jscs.info/rule/disallowQuotedKeysInObjects)
+  
+  tslint: `"object-literal-key-quotes": [true, "as-needed"]`
 
   > Why? In general we consider it subjectively easier to read. It improves syntax highlighting, and is also more easily optimized by many JS engines.
 
@@ -327,6 +338,22 @@ Other Style Guides
     // good
     const items = [];
     ```
+    
+    tslint: `"prefer-array-literal": [ true, { "allow-type-parameters": true } ]`
+    
+    ```javascript
+    class Test {
+        //good
+        items: Array<string>;
+        
+        constructor() {
+            //bad
+            this.items = new Array<string>();
+            
+            //good
+            this.items = [];
+        }
+    }
 
   <a name="arrays--push"></a><a name="4.2"></a>
   - [4.2](#arrays--push) Use [Array#push](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/push) instead of direct assignment to add items to an array.
@@ -368,6 +395,8 @@ Other Style Guides
 
   <a name="arrays--callback-return"></a><a name="4.5"></a>
   - [4.5](#arrays--callback-return) Use return statements in array method callbacks. It's ok to omit the return if the function body consists of a single statement following [8.2](#8.2). eslint: [`array-callback-return`](http://eslint.org/docs/rules/array-callback-return)
+  
+  **tslint: currently not implemented.**
 
     ```javascript
     // good
@@ -417,7 +446,7 @@ Other Style Guides
 
 **[⬆ back to top](#table-of-contents)**
 
-## Destructuring
+## Destructuring (wow!)
 
   <a name="destructuring--object"></a><a name="5.1"></a>
   - [5.1](#destructuring--object) Use object destructuring when accessing and using multiple properties of an object. jscs: [`requireObjectDestructuring`](http://jscs.info/rule/requireObjectDestructuring)
@@ -849,6 +878,14 @@ Other Style Guides
 
   <a name="arrows--use-them"></a><a name="8.1"></a>
   - [8.1](#arrows--use-them) When you must use function expressions (as when passing an anonymous function), use arrow function notation. eslint: [`prefer-arrow-callback`](http://eslint.org/docs/rules/prefer-arrow-callback.html), [`arrow-spacing`](http://eslint.org/docs/rules/arrow-spacing.html) jscs: [`requireArrowFunctions`](http://jscs.info/rule/requireArrowFunctions)
+  
+  tslint: 
+  ```json
+  "ter-prefer-arrow-callback": [true, {
+     "allowNamedFunctions": true,
+     "allowUnboundThis": false
+  }]
+  ```
 
     > Why? It creates a version of the function that executes in the context of `this`, which is usually what you want, and is a more concise syntax.
 
@@ -1427,6 +1464,8 @@ Other Style Guides
 
   <a name="variables--const"></a><a name="13.1"></a>
   - [13.1](#variables--const) Always use `const` to declare variables. Not doing so will result in global variables. We want to avoid polluting the global namespace. Captain Planet warned us of that. eslint: [`no-undef`](http://eslint.org/docs/rules/no-undef) [`prefer-const`](http://eslint.org/docs/rules/prefer-const)
+  
+  Well, we can't do this in TypeScript anyway.
 
     ```javascript
     // bad
@@ -1438,6 +1477,8 @@ Other Style Guides
 
   <a name="variables--one-const"></a><a name="13.2"></a>
   - [13.2](#variables--one-const) Use one `const` declaration per variable. eslint: [`one-var`](http://eslint.org/docs/rules/one-var.html) jscs: [`disallowMultipleVarDecl`](http://jscs.info/rule/disallowMultipleVarDecl)
+  
+  tslint: `"one-variable-per-declaration": [true, "ignore-for-loop"]`
 
     > Why? It's easier to add new variable declarations this way, and you never have to worry about swapping out a `;` for a `,` or introducing punctuation-only diffs. You can also step through each declaration with the debugger, instead of jumping through all of them at once.
 
@@ -1697,6 +1738,8 @@ Other Style Guides
 
   <a name="comparison--eqeqeq"></a><a name="15.1"></a>
   - [15.1](#comparison--eqeqeq) Use `===` and `!==` over `==` and `!=`. eslint: [`eqeqeq`](http://eslint.org/docs/rules/eqeqeq.html)
+  
+  tslint: `"triple-equals": true`
 
   <a name="comparison--if"></a><a name="15.2"></a>
   - [15.2](#comparison--if) Conditional statements such as the `if` statement evaluate their expression using coercion with the `ToBoolean` abstract method and always follow these simple rules:
@@ -1872,6 +1915,14 @@ Other Style Guides
 
   <a name="blocks--cuddled-elses"></a><a name="16.2"></a>
   - [16.2](#blocks--cuddled-elses) If you're using multi-line blocks with `if` and `else`, put `else` on the same line as your `if` block's closing brace. eslint: [`brace-style`](http://eslint.org/docs/rules/brace-style.html) jscs:  [`disallowNewlineBeforeBlockStatements`](http://jscs.info/rule/disallowNewlineBeforeBlockStatements)
+  
+    tslint:
+    ```json
+    "brace-style": [
+      true,
+      "1tbs"
+    ]
+    ```
 
     ```javascript
     // bad
@@ -1897,6 +1948,12 @@ Other Style Guides
 
 
 ## Comments
+
+  tslint:
+  ```json
+  "no-suspicious-comment": true,
+  "no-single-line-block-comment": true,
+  ```
 
   <a name="comments--multiline"></a><a name="17.1"></a>
   - [17.1](#comments--multiline) Use `/** ... */` for multi-line comments.
@@ -2041,6 +2098,8 @@ Other Style Guides
 
   <a name="whitespace--spaces"></a><a name="18.1"></a>
   - [18.1](#whitespace--spaces) Use soft tabs set to 2 spaces. eslint: [`indent`](http://eslint.org/docs/rules/indent.html) jscs: [`validateIndentation`](http://jscs.info/rule/validateIndentation)
+  
+    tslint: `"ter-indent": [true, 2]`
 
     ```javascript
     // bad
@@ -2284,6 +2343,14 @@ Other Style Guides
 
   <a name="whitespace--in-parens"></a><a name="18.9"></a>
   - [18.9](#whitespace--in-parens) Do not add spaces inside parentheses. eslint: [`space-in-parens`](http://eslint.org/docs/rules/space-in-parens.html) jscs: [`disallowSpacesInsideParentheses`](http://jscs.info/rule/disallowSpacesInsideParentheses)
+  
+    tslint:
+    ```json
+    "array-bracket-spacing": [
+      true,
+      "never"
+    ],
+    ```
 
     ```javascript
     // bad
@@ -2322,6 +2389,14 @@ Other Style Guides
 
   <a name="whitespace--in-braces"></a><a name="18.11"></a>
   - [18.11](#whitespace--in-braces) Add spaces inside curly braces. eslint: [`object-curly-spacing`](http://eslint.org/docs/rules/object-curly-spacing.html) jscs: [`requireSpacesInsideObjectBrackets`](http://jscs.info/rule/requireSpacesInsideObjectBrackets)
+  
+    tslint:
+    ```json
+    "object-curly-spacing": [
+      true,
+      "always"
+    ]
+    ```
 
     ```javascript
     // bad
@@ -2333,6 +2408,8 @@ Other Style Guides
 
   <a name="whitespace--max-len"></a><a name="18.12"></a>
   - [18.12](#whitespace--max-len) Avoid having lines of code that are longer than 100 characters (including whitespace). Note: per [above](#strings--line-length), long strings are exempt from this rule, and should not be broken up. eslint: [`max-len`](http://eslint.org/docs/rules/max-len.html) jscs: [`maximumLineLength`](http://jscs.info/rule/maximumLineLength)
+  
+    tslint: `"ter-max-len": [true, 100]`
 
     > Why? This ensures readability and maintainability.
 
@@ -2402,6 +2479,8 @@ Other Style Guides
 
   <a name="commas--dangling"></a><a name="19.2"></a>
   - [19.2](#commas--dangling) Additional trailing comma: **Yup.** eslint: [`comma-dangle`](http://eslint.org/docs/rules/comma-dangle.html) jscs: [`requireTrailingComma`](http://jscs.info/rule/requireTrailingComma)
+  
+    tslint: `"trailing-comma": [true, {"multiline": "always", "singleline": "never"}],`
 
     > Why? This leads to cleaner git diffs. Also, transpilers like Babel will remove the additional trailing comma in the transpiled code which means you don't have to worry about the [trailing comma problem](https://github.com/airbnb/javascript/blob/es5-deprecated/es5/README.md#commas) in legacy browsers.
 
@@ -2503,6 +2582,8 @@ Other Style Guides
 
   <a name="semicolons--required"></a><a name="20.1"></a>
   - [20.1](#20.1) **Yup.** eslint: [`semi`](http://eslint.org/docs/rules/semi.html) jscs: [`requireSemicolons`](http://jscs.info/rule/requireSemicolons)
+  
+    tslint: `"semicolon": [true, "always"]`
 
     ```javascript
     // bad
@@ -2552,6 +2633,8 @@ Other Style Guides
 
   <a name="coercion--numbers"></a><a name="21.3"></a>
   - [21.3](#coercion--numbers) Numbers: Use `Number` for type casting and `parseInt` always with a radix for parsing strings. eslint: [`radix`](http://eslint.org/docs/rules/radix)
+  
+    tslint: `"radix": true`
 
     ```javascript
     const inputValue = '4';
@@ -2620,6 +2703,8 @@ Other Style Guides
 
   <a name="naming--descriptive"></a><a name="22.1"></a>
   - [22.1](#naming--descriptive) Avoid single letter names. Be descriptive with your naming. eslint: [`id-length`](http://eslint.org/docs/rules/id-length)
+  
+    tslint: `"variable-name": [true, "ban-keywords", "check-format", "allow-pascal-case", "allow-leading-underscore"]`
 
     ```javascript
     // bad
